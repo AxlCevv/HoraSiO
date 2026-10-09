@@ -3,8 +3,9 @@ from entidades import Paralelo, Materia, Aula
 from horarios import Horario
 from persistencia import GestorPersistencia
 
+
 class SistemaGestion:
-    def _init_(self):
+    def __init__(self):
         self.usuarios = []
         self.materias = []
         self.aulas = []
@@ -15,20 +16,23 @@ class SistemaGestion:
 
     def _cargar_datos_iniciales(self):
         p1 = Paralelo(1, "A", "Segundo Nivel")
-        self.paralelos.append(p1)
+        p2 = Paralelo(2, "B", "Segundo Nivel")
+        self.paralelos.extend([p1, p2])
 
         m1 = Materia(1, "Programación POO", "POO-202")
-        self.materias.append(m1)
+        m2 = Materia(2, "Bases de Datos", "BD-203")
+        self.materias.extend([m1, m2])
 
         a1 = Aula(1, "Lab 1", 30, "Bloque A")
-        self.aulas.append(a1)
+        a2 = Aula(2, "Aula 102", 40, "Bloque B")
+        self.aulas.extend([a1, a2])
 
-        self.usuarios.extend([
-            Administrador(1, "Alex", "Mora", "admin@horasio.com", "1234"),
-            Coordinador(2, "Carla", "Vera", "coord@horasio.com", "1234"),
-            Docente(3, "Luis", "Paz", "docente@horasio.com", "1234"),
-            Estudiante(4, "Sofia", "Loor", "estudiante@horasio.com", "1234", p1)
-        ])
+        admin = Administrador(1, "Alex", "Mora", "admin@horasio.com", "1234")
+        coord = Coordinador(2, "Carla", "Vera", "coord@horasio.com", "1234")
+        docente = Docente(3, "Luis", "Paz", "docente@horasio.com", "1234")
+        estudiante = Estudiante(4, "Sofia", "Loor", "estudiante@horasio.com", "1234", p1)
+
+        self.usuarios.extend([admin, coord, docente, estudiante])
 
     def autenticar(self, correo, contrasena):
         for u in self.usuarios:
