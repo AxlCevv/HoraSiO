@@ -2,42 +2,41 @@
 
 Avance de proyecto en Python con Programación Orientada a Objetos.
 
-## Archivos incluidos
-1. `main.py`: Punto de entrada del sistema.
-2. `usuarios.py`: Gestión de usuarios (Admin, Coordinador, Docente, Estudiante).
-3. `entidades.py`: Clases base (Paralelo, Materia, Aula).
-4. `horarios.py`: Manejo de horarios, preasignaciones y validación de colisiones.
-5. `gestion.py`: Controlador global del sistema en memoria.
-6. `persistencia.py`: Módulo de respaldo y guardado en JSON.
+## Archivos
 
-## Usuarios de Prueba y Credenciales de Acceso
+- main.py: menú, conexión de dependencias y punto de entrada.
+- usuarios.py: clase abstracta base con propiedades, métodos y datos encapsulados.
+- administrador.py: clase Administrador, derivada de Usuario.
+- coordinador.py: clase Coordinador, derivada de Usuario.
+- docente.py: clase Docente, derivada de Usuario.
+- estudiante.py: clase Estudiante, derivada de Usuario.
+- interfaces.py: contrato IPersistencia.
+- gestion.py: sistema de gestión y autenticación.
+- persistencia.py: respaldo manual de datos a JSON.
+- entidades.py: paralelo, materia y aula.
+- horarios.py: horarios, asignaciones y validación de colisiones.
 
-Para probar los diferentes roles y funcionalidades del sistema HoraSIO, utiliza las siguientes credenciales preconfiguradas:
+## Conceptos de POO
 
-- Administrador
-  - Correo: admin@horasio.com
-  - Contraseña: 1234
-  - Funciones: Delegar el rol de Coordinador a usuarios registrados y consultar el listado general de usuarios.
+- Encapsulamiento y propiedades: Usuario guarda atributos internos con _ y valida los datos mediante propiedades.
+- Constructores: cada rol llama a super().__init__() para inicializar la parte común.
+- Métodos: inicio de sesión, cambio de contraseña, registro y consulta de horarios.
+- Sobrecarga flexible: Coordinador.registrarEstudiante acepta un objeto Estudiante o sus datos; Usuario.actualizarDatos acepta uno o más campos opcionales. Python simula la sobrecarga de esta manera.
+- Herencia: Administrador, Coordinador, Docente y Estudiante heredan de Usuario.
+- Polimorfismo abstracto: Usuario declara mostrarPanel como abstracto; cada rol lo implementa y main invoca el mismo método.
+- Polimorfismo con interfaz: SistemaGestion recibe una implementación que cumple el contrato IPersistencia y la usa mediante guardar_datos.
+- Inyección de dependencias: main.py crea GestorPersistencia y lo entrega al constructor de SistemaGestion.
 
-- Coordinador
-  - Correo: coord@horasio.com
-  - Contraseña: 1234
-  - Funciones: Asignar materias, aulas y docentes con verificación automática anti-colisiones, registrar nuevos estudiantes y revisar el horario general.
+## Persistencia
 
-- Docente
-  - Correo: docente@horasio.com
-  - Contraseña: 1234
-  - Funciones: Consultar únicamente las clases asignadas a su perfil.
+La opción 2 del menú exporta un respaldo JSON con usuarios (sin contraseñas), materias, aulas, paralelos y asignaciones de horario. Este avance permite guardar/exportar el estado; todavía no carga el archivo JSON al iniciar el programa.
 
-- Estudiante
-  - Correo: estudiante@horasio.com
-  - Contraseña: 1234
-  - Funciones: Consultar únicamente el horario correspondiente a su paralelo.
+## Usuarios de prueba
 
-### Cómo Iniciar Sesión
+- Administrador: admin@horasio.com / 1234
+- Coordinador: coord@horasio.com / 1234
+- Docente: docente@horasio.com / 1234
+- Estudiante: estudiante@horasio.com / 1234
 
-1. Ejecuta el sistema desde la terminal:
-   python main.py
+Ejecuta python main.py desde la carpeta del proyecto.
 
-2. Selecciona la opción "1. Iniciar Sesión" en el menú principal.
-3. Ingrese el correo del rol que deseas probar y la contraseña "1234".
