@@ -2,7 +2,6 @@ from horarios import PreAsignacion
 from estudiante import Estudiante
 from usuarios import Usuario
 
-
 # HERENCIA: Coordinador comparte el estado y comportamiento común de Usuario.
 class Coordinador(Usuario):
     # CONSTRUCTOR: super() establece los datos comunes con el rol Coordinador.
