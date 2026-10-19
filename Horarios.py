@@ -4,7 +4,6 @@ class FranjaHoraria:
         self.horaInicio = horaInicio
         self.horaFin = horaFin
 
-
 class PreAsignacion:
     def __init__(self, id, materia, aula, paralelo, docente, franja):
         self.id = id
