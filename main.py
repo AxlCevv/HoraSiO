@@ -1,7 +1,10 @@
 from gestion import SistemaGestion
 from horarios import FranjaHoraria
+from persistencia import GestorPersistencia
 
-sistema = SistemaGestion()
+
+# INYECCIÓN DE DEPENDENCIAS: main conecta una implementación concreta de persistencia al sistema.
+sistema = SistemaGestion(GestorPersistencia())
 
 
 def solicitar_credenciales():
@@ -11,6 +14,8 @@ def solicitar_credenciales():
     usuario = sistema.autenticar(correo, contrasena)
     if usuario:
         print(f"\nBienvenido/a {usuario.nombre} {usuario.apellido} [{usuario.rol}]")
+        # POLIMORFISMO ABSTRACTO: se invoca el mismo método y actúa la clase concreta del usuario.
+        usuario.mostrarPanel()
     else:
         print("\nCredenciales inválidas.")
     return usuario
@@ -26,14 +31,20 @@ def menu_administrador(admin):
 
         if opcion == "1":
             print("\nUsuarios del sistema:")
-            for u in sistema.usuarios:
-                print(f"ID: {u.id} | Nombre: {u.nombre} {u.apellido} | Rol actual: {u.rol}")
-            
+            for usuario in sistema.usuarios:
+                print(
+                    f"ID: {usuario.id} | Nombre: {usuario.nombre} "
+                    f"{usuario.apellido} | Rol actual: {usuario.rol}"
+                )
+
             try:
                 uid = int(input("Ingrese el ID del usuario a convertir en Coordinador: "))
-                usuario_target = next((u for u in sistema.usuarios if u.id == uid), None)
-                if usuario_target:
-                    admin.delegarRolCoordinador(usuario_target, sistema)
+                usuario_objetivo = next(
+                    (usuario for usuario in sistema.usuarios if usuario.id == uid),
+                    None,
+                )
+                if usuario_objetivo:
+                    admin.delegarRolCoordinador(usuario_objetivo, sistema)
                 else:
                     print("Usuario no encontrado.")
             except ValueError:
@@ -41,8 +52,11 @@ def menu_administrador(admin):
 
         elif opcion == "2":
             print("\n--- Usuarios Registrados ---")
-            for u in sistema.usuarios:
-                print(f"[{u.rol}] ID: {u.id} - {u.nombre} {u.apellido} ({u.correo})")
+            for usuario in sistema.usuarios:
+                print(
+                    f"[{usuario.rol}] ID: {usuario.id} - "
+                    f"{usuario.nombre} {usuario.apellido} ({usuario.correo})"
+                )
 
         elif opcion == "3":
             admin.cerrarSesion()
@@ -61,25 +75,25 @@ def menu_coordinador(coordinador):
         if opcion == "1":
             print("\n--- Asignar Clase ---")
             print("Materias disponibles:")
-            for idx, m in enumerate(sistema.materias, 1):
-                print(f"{idx}. {m.nombre} ({m.codigo})")
-            m_idx = int(input("Seleccione Materia #: ")) - 1
+            for idx, materia in enumerate(sistema.materias, 1):
+                print(f"{idx}. {materia.nombre} ({materia.codigo})")
+            materia_idx = int(input("Seleccione Materia #: ")) - 1
 
             print("Aulas disponibles:")
-            for idx, a in enumerate(sistema.aulas, 1):
-                print(f"{idx}. {a.numero} - Capacidad: {a.capacidad}")
-            a_idx = int(input("Seleccione Aula #: ")) - 1
+            for idx, aula in enumerate(sistema.aulas, 1):
+                print(f"{idx}. {aula.numero} - Capacidad: {aula.capacidad}")
+            aula_idx = int(input("Seleccione Aula #: ")) - 1
 
             print("Paralelos disponibles:")
-            for idx, p in enumerate(sistema.paralelos, 1):
-                print(f"{idx}. Paralelo {p.nombre} ({p.nivel})")
-            p_idx = int(input("Seleccione Paralelo #: ")) - 1
+            for idx, paralelo in enumerate(sistema.paralelos, 1):
+                print(f"{idx}. Paralelo {paralelo.nombre} ({paralelo.nivel})")
+            paralelo_idx = int(input("Seleccione Paralelo #: ")) - 1
 
-            docentes = [u for u in sistema.usuarios if u.rol == "Docente"]
+            docentes = [usuario for usuario in sistema.usuarios if usuario.rol == "Docente"]
             print("Docentes disponibles:")
-            for idx, d in enumerate(docentes, 1):
-                print(f"{idx}. {d.nombre} {d.apellido}")
-            d_idx = int(input("Seleccione Docente #: ")) - 1
+            for idx, docente in enumerate(docentes, 1):
+                print(f"{idx}. {docente.nombre} {docente.apellido}")
+            docente_idx = int(input("Seleccione Docente #: ")) - 1
 
             dia = input("Día (Ej. Lunes): ")
             inicio = input("Hora Inicio (HH:MM, Ej. 08:00): ")
@@ -87,12 +101,12 @@ def menu_coordinador(coordinador):
 
             franja = FranjaHoraria(dia, inicio, fin)
             coordinador.crearAsignacion(
-                sistema.materias[m_idx],
-                sistema.aulas[a_idx],
-                sistema.paralelos[p_idx],
-                docentes[d_idx],
+                sistema.materias[materia_idx],
+                sistema.aulas[aula_idx],
+                sistema.paralelos[paralelo_idx],
+                docentes[docente_idx],
                 franja,
-                sistema.horario_actual
+                sistema.horario_actual,
             )
 
         elif opcion == "2":
@@ -103,9 +117,9 @@ def menu_coordinador(coordinador):
             contrasena = input("Contraseña: ")
 
             print("Seleccione el paralelo para el estudiante:")
-            for idx, p in enumerate(sistema.paralelos, 1):
-                print(f"{idx}. Paralelo {p.nombre}")
-            p_idx = int(input("Opción: ")) - 1
+            for idx, paralelo in enumerate(sistema.paralelos, 1):
+                print(f"{idx}. Paralelo {paralelo.nombre}")
+            paralelo_idx = int(input("Opción: ")) - 1
 
             coordinador.registrarEstudiante(
                 len(sistema.usuarios) + 1,
@@ -113,8 +127,8 @@ def menu_coordinador(coordinador):
                 apellido,
                 correo,
                 contrasena,
-                sistema.paralelos[p_idx],
-                sistema
+                sistema.paralelos[paralelo_idx],
+                sistema,
             )
 
         elif opcion == "3":
@@ -181,3 +195,4 @@ def ejecutar():
 
 if __name__ == "__main__":
     ejecutar()
+
