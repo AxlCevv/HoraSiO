@@ -1,6 +1,5 @@
 from usuarios import Usuario
 
-
 # HERENCIA: Docente reutiliza la clase base Usuario.
 class Docente(Usuario):
     # CONSTRUCTOR: super() inicializa los atributos comunes del usuario.
