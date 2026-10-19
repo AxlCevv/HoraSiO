@@ -9,7 +9,7 @@ from persistencia import GestorPersistencia
 
 
 class SistemaGestion:
-    def _init_(self, persistencia: IPersistencia | None = None):
+    def __init__(self, persistencia: IPersistencia | None = None):
         self.usuarios = []
         self.materias = []
         self.aulas = []
