@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 # ABSTRACCIÓN: base común que no se instancia directamente; define lo compartido por todos los roles.
 class Usuario(ABC):
     # CONSTRUCTOR: recibe los datos comunes y los conserva en atributos internos.
