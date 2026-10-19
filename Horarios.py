@@ -29,9 +29,9 @@ class Horario:
     def agregarAsignacion(self, nueva):
         if self.validar(nueva):
             self.preasignaciones.append(nueva)
-            print("✔ Asignación registrada exitosamente")
+            print(" Asignación registrada exitosamente")
             return True
-        print("✖ Error: Existe una colisión de horarios")
+        print(" Error: Existe una colisión de horarios")
         return False
 
     def validar(self, nueva):
