@@ -1,6 +1,5 @@
 from usuarios import Usuario
 
-
 # HERENCIA: Administrador reutiliza los atributos y métodos definidos en Usuario.
 class Administrador(Usuario):
     # CONSTRUCTOR: super() inicializa la parte común heredada.
