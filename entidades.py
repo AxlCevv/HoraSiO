@@ -4,13 +4,11 @@ class Paralelo:
         self.nombre = nombre
         self.nivel = nivel
 
-
 class Materia:
     def __init__(self, id, nombre, codigo):
         self.id = id
         self.nombre = nombre
         self.codigo = codigo
-
 
 class Aula:
     def __init__(self, id, numero, capacidad, ubicacion):
