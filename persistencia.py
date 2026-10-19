@@ -1,7 +1,5 @@
 import json
-
 from interfaces import IPersistencia
-
 
 # IMPLEMENTACIÓN DE INTERFAZ: esta clase satisface el contrato IPersistencia.
 class GestorPersistencia:
