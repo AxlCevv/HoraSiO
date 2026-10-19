@@ -1,6 +1,5 @@
 from usuarios import Usuario
 
-
 # HERENCIA: Estudiante es un Usuario y agrega el dato específico de su paralelo.
 class Estudiante(Usuario):
     # CONSTRUCTOR: inicializa los datos comunes con super() y añade paralelo.
